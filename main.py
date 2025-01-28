@@ -24,7 +24,7 @@ def main():
     monitor.GameMonitor((0, 0, 0))
 
     player.Player.containers = [updatable, drawable]
-    player.Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+    main_player = player.Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
 
     asteroid.Asteroid.containers = [updatable, drawable, asteroids]
     asteroid.AsteroidField.containers = [updatable]
@@ -39,6 +39,12 @@ def main():
         # Draw to screen
         for entity in drawable:
             entity.draw(screen)
+
+        # Check collisions
+        for entity in asteroids:
+            if entity.collides_with(main_player):
+                print("Game Over!")
+                monitor.GameMonitor.gamestate = monitor.GameState.STOP
 
         pygame.display.flip()
 
