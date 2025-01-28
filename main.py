@@ -1,5 +1,6 @@
 import pygame
 
+import monitor
 import player
 from constants import *
 
@@ -14,20 +15,25 @@ def main():
     clock = pygame.time.Clock()
     dt = 0
 
-    main_player = player.Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+    updatable = pygame.sprite.Group()
+    drawable = pygame.sprite.Group()
+
+    monitor.GameMonitor.containers = [updatable, drawable]
+    monitor.GameMonitor((0, 0, 0))
+
+    player.Player.containers = [updatable, drawable]
+    player.Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
 
     # Main game loop
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                return
+    while monitor.GameMonitor.gamestate == monitor.GameState.RUNNING:
+        # Game updates
+        for entity in updatable:
+            entity.update(dt)
 
-        # Player movement
-        main_player.update(dt)
+        # Draw to screen
+        for entity in drawable:
+            entity.draw(screen)
 
-        # Rendering
-        screen.fill(color=(0, 0, 0))
-        main_player.draw(screen)
         pygame.display.flip()
 
         dt = clock.tick(60) / 1000
