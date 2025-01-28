@@ -1,5 +1,6 @@
 import pygame
 
+import asteroid
 import monitor
 import player
 from constants import *
@@ -17,12 +18,17 @@ def main():
 
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
+    asteroids = pygame.sprite.Group()
 
     monitor.GameMonitor.containers = [updatable, drawable]
     monitor.GameMonitor((0, 0, 0))
 
     player.Player.containers = [updatable, drawable]
     player.Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
+
+    asteroid.Asteroid.containers = [updatable, drawable, asteroids]
+    asteroid.AsteroidField.containers = [updatable]
+    asteroid.AsteroidField()
 
     # Main game loop
     while monitor.GameMonitor.gamestate == monitor.GameState.RUNNING:
