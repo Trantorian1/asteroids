@@ -22,7 +22,7 @@ def main():
             if event.type == pygame.QUIT:
                 return
 
-        # Player update
+        # Player movement
         main_player.update(dt)
 
         # Rendering
